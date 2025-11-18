@@ -3,6 +3,7 @@ import csv
 import polars as pl
 import glob
 from os import path
+import pytest
 
 
 def call_agent(company):
@@ -13,10 +14,9 @@ def call_agent(company):
 
     return recommendation
 
-success_cnt = 0
-fail_cnt = 0
 
-for file in glob.glob("stock_price_csv/*.csv")[:5]:
+@pytest.mark.parametrize("file", glob.glob("stock_price_csv/*.csv")[:5])
+def test_company_recommendation(file):
     company = (path.basename(file).split("_")[2]).split(".")[0]
 
     stock_price_history = pl.read_csv(file)
@@ -28,19 +28,11 @@ for file in glob.glob("stock_price_csv/*.csv")[:5]:
 
     print(f"{company} | {recommendation}")
     print(f"Begin: {stock_price_begin} | End: {stock_price_end}")
-    if ("<Recommendation: SELL>" in recommendation) and (stock_price_begin > stock_price_end):
-        print("Success")
-        success_cnt = success_cnt + 1
-    elif ("<Recommendation: BUY>" in recommendation) and (stock_price_begin < stock_price_end):
-        print("Success")
-        success_cnt = success_cnt + 1
-    else:
-        print("Fail")
-        fail_cnt = fail_cnt + 1
 
-print("Final results:")
-print(success_cnt)
-print(fail_cnt)
+    if stock_price_begin > stock_price_end:
+        assert "<Recommendation: SELL>" in recommendation, f"Expected SELL for {company} (price decreased)"
+    elif stock_price_begin < stock_price_end:
+        assert "<Recommendation: BUY>" in recommendation, f"Expected BUY for {company} (price increased)"
 
 
 
