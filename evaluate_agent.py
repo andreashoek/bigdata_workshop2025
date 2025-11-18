@@ -5,17 +5,42 @@ import glob
 from os import path
 
 
-# result = agent.invoke({
-#     "messages": [{"role": "user", "content": "Should I buy or sell AAPL?"}]
-# })
-# print(result["messages"][-1].content)
+def call_agent(company):
+    result = agent.invoke({
+        "messages": [{"role": "user", "content": f"Should I buy or sell {company}?"}]
+    })
+    recommendation = result["messages"][-1].content
 
-for file in glob.glob("stock_price_csv/*.csv"):
-    print(path.basename(file))
+    return recommendation
 
-stock_price_history = pl.read_csv('stock_price_csv/csv_test_AAPL.csv')
+success_cnt = 0
+fail_cnt = 0
 
-stock_price_begin = stock_price_history.select(pl.first("close"))
-stock_price_end = stock_price_history.select(pl.last("close"))
+for file in glob.glob("stock_price_csv/*.csv")[:5]:
+    company = (path.basename(file).split("_")[2]).split(".")[0]
 
-print(stock_price_begin > stock_price_end)
+    stock_price_history = pl.read_csv(file)
+
+    stock_price_begin = stock_price_history.select(pl.first("close")).item()
+    stock_price_end = stock_price_history.select(pl.last("close")).item()
+
+    recommendation = call_agent(company)
+
+    print(f"{company} | {recommendation}")
+
+    if ("**Recommendation: SELL**" in recommendation) and (stock_price_begin > stock_price_end):
+        print("Success")
+        success_cnt = success_cnt + 1
+    elif ("**Recommendation: BUY**" in recommendation) and (stock_price_begin < stock_price_end):
+        print("Success")
+        success_cnt = success_cnt + 1
+    else:
+        print("Fail")
+        fail_cnt = fail_cnt + 1
+
+print("Final results:")
+print(success_cnt)
+print(fail_cnt)
+
+
+
