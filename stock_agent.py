@@ -22,16 +22,29 @@ def analyze_stock(ticker: str) -> dict:
     """
     Analyze a stock across multiple timeframes and provide comprehensive data for buy/sell decision.
     Returns today's data, weekly trend, yearly trend, and technical indicators.
+    
+    Args:
+        ticker: Stock ticker symbol
     """
     try:
+        days_offset = 7
         stock = yf.Ticker(ticker)
         info = stock.info
         
-        # Get different time periods
-        today = stock.history(period="1d")
-        week = stock.history(period="5d")
-        month = stock.history(period="1mo")
-        year = stock.history(period="1y")
+        # Calculate reference date (offset from today)
+        reference_date = datetime.now() - timedelta(days=days_offset)
+        end_date = reference_date
+        
+        # Get different time periods relative to the offset date
+        start_today = end_date - timedelta(days=1)
+        start_week = end_date - timedelta(days=5)
+        start_month = end_date - timedelta(days=30)
+        start_year = end_date - timedelta(days=365)
+        
+        today = stock.history(start=start_today.strftime('%Y-%m-%d'), end=end_date.strftime('%Y-%m-%d'))
+        week = stock.history(start=start_week.strftime('%Y-%m-%d'), end=end_date.strftime('%Y-%m-%d'))
+        month = stock.history(start=start_month.strftime('%Y-%m-%d'), end=end_date.strftime('%Y-%m-%d'))
+        year = stock.history(start=start_year.strftime('%Y-%m-%d'), end=end_date.strftime('%Y-%m-%d'))
         
         if today.empty or week.empty or year.empty:
             return {"status": "error", "message": f"No data found for {ticker}"}
@@ -128,7 +141,10 @@ Base your recommendation on:
 
    The customer wants to hold the stock for one week so decie wehter you think the stock will go up or down in that timeframe.
 Always structure your response as:
-<Recommendation: BUY** or **Recommendation: SELL>‚
+
+<Recommendation: BUY** or **Recommendation: SELL>
+
+and only this sentence
 """,
     )
 
