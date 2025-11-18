@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
+from transformers import BertTokenizer, BertForSequenceClassification
+import torch
+from langsmith import traceable
+
 
 # Load environment variables
 load_dotenv()
@@ -17,7 +21,47 @@ llm = ChatOpenAI(
     temperature=0.3,
 )
 
+# Initialize FinBERT for sentiment analysis
+print("Loading FinBERT model...")
+finbert = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-tone', num_labels=3)
+tokenizer = BertTokenizer.from_pretrained('yiyanghkust/finbert-tone')
+finbert.eval()  # Set to evaluation mode
+print("FinBERT model loaded successfully!")
+
+
+@traceable(run_type="llm")
+def get_sentiment_score(text):
+    """
+    Analyze sentiment of financial text using FinBERT.
+    Returns a sentiment score between -1 (negative) and 1 (positive).
+    """
+    if not text or len(text.strip()) == 0:
+        return 0.0
+    
+    try:
+        # Tokenize the input
+        inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True, max_length=512)
+        
+        # Get predictions
+        with torch.no_grad():
+            outputs = finbert(**inputs)
+            predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
+        
+        # Convert to numpy
+        probs = predictions[0].numpy()
+        
+        # Labels: 0=neutral, 1=positive, 2=negative
+        # Calculate sentiment score: positive - negative
+        sentiment_score = float(probs[1] - probs[2])
+        
+        return sentiment_score
+    
+    except Exception as e:
+        print(f"Error in sentiment analysis: {str(e)}")
+        return 0.0
+
 @tool
+@traceable
 def analyze_stock(ticker: str) -> dict:
     """
     Analyze a stock across multiple timeframes and provide comprehensive data for buy/sell decision.
@@ -112,6 +156,70 @@ def analyze_stock(ticker: str) -> dict:
         return {"status": "error", "message": f"Error analyzing stock: {str(e)}"}
 
 
+@tool
+@traceable
+def analyze_stock_sentiment(ticker: str) -> dict:
+    """
+    Analyze sentiment of recent news for a stock using FinBERT.
+    Returns sentiment score and summary of news analyzed.
+    
+    Args:
+        ticker: Stock ticker symbol
+    """
+    try:
+        stock = yf.Ticker(ticker)
+        news = stock.news
+        
+        if not news:
+            return {
+                "status": "success",
+                "ticker": ticker.upper(),
+                "sentiment_score": 0.0,
+                "sentiment_label": "Neutral",
+                "news_count": 0,
+                "message": "No recent news found"
+            }
+        
+        # Analyze sentiment for recent news (last 10 articles)
+        sentiment_scores = []
+        news_analyzed = 0
+        
+        for article in news[:10]:
+            title = article.get('title', '')
+            summary = article.get('summary', '')
+            # Combine title and summary for better context
+            full_text = f"{title}. {summary}" if summary else title
+            
+            if full_text.strip():
+                score = get_sentiment_score(full_text)
+                sentiment_scores.append(score)
+                news_analyzed += 1
+        
+        # Calculate average sentiment
+        avg_sentiment = sum(sentiment_scores) / len(sentiment_scores) if sentiment_scores else 0.0
+        
+        # Determine sentiment label
+        if avg_sentiment > 0.2:
+            sentiment_label = "Positive"
+        elif avg_sentiment < -0.2:
+            sentiment_label = "Negative"
+        else:
+            sentiment_label = "Neutral"
+        
+        return {
+            "status": "success",
+            "ticker": ticker.upper(),
+            "sentiment_score": round(avg_sentiment, 3),
+            "sentiment_label": sentiment_label,
+            "news_count": news_analyzed,
+            "message": f"Analyzed {news_analyzed} recent news articles"
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": f"Error analyzing sentiment: {str(e)}"}
+
+
+@traceable
 def create_stock_agent():
     """
     Create and return a stock trading advisor agent.
@@ -120,7 +228,7 @@ def create_stock_agent():
     return create_agent(
         model=llm,
         tools=[analyze_stock],
-        system_prompt="""You are a stock trading advisor. When a user asks about a stock, use the analyze_stock tool and provide a clear BUY or SELL recommendation.
+        system_prompt="""You are a stock trading advisor. When a user asks about a stock, use the analyze_stock tool to gather comprehensive data, then provide a clear BUY or SELL recommendation.
 
 Base your recommendation on:
 1. **Trend Analysis**: 
@@ -139,10 +247,15 @@ Base your recommendation on:
    - Price position > 70% (near 52-week high) = May be overbought
    - Price position < 30% (near 52-week low) = May be oversold/opportunity
 
-   The customer wants to hold the stock for one week so decie wehter you think the stock will go up or down in that timeframe.
+5. **News Sentiment**:
+   - Positive sentiment (> 0.2) = Bullish signal, market optimism
+   - Negative sentiment (< -0.2) = Bearish signal, market pessimism
+   - Neutral sentiment = No strong directional bias from news
+
+   The customer wants to hold the stock for one week so decide whether you think the stock will go up or down in that timeframe.
 Always structure your response as:
 
-<Recommendation: BUY** or **Recommendation: SELL>
+<Recommendation: BUY> or <Recommendation: SELL>
 
 and only this sentence
 """,
@@ -151,6 +264,20 @@ and only this sentence
 
 # Create the agent instance for import
 agent = create_stock_agent()
+
+
+@traceable
+def run_analysis(ticker: str):
+    """Run the stock analysis pipeline for a given ticker."""
+    result = agent.invoke({
+        "messages": [
+            {
+                "role": "user",
+                "content": f"Should I buy or sell {ticker}?"
+            }
+        ]
+    })
+    return result["messages"][-1].content
 
 
 # Run the agent
@@ -162,13 +289,5 @@ if __name__ == "__main__":
     print(f"Analyzing {ticker.upper()}...")
     print('='*60)
     
-    result = agent.invoke({
-        "messages": [
-            {
-                "role": "user",
-                "content": f"Should I buy or sell {ticker}?"
-            }
-        ]
-    })
-    
-    print(result["messages"][-1].content)
+    recommendation = run_analysis(ticker)
+    print(recommendation)

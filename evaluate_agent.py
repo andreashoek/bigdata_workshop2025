@@ -27,11 +27,11 @@ for file in glob.glob("stock_price_csv/*.csv")[:5]:
     recommendation = call_agent(company)
 
     print(f"{company} | {recommendation}")
-
-    if ("**Recommendation: SELL**" in recommendation) and (stock_price_begin > stock_price_end):
+    print(f"Begin: {stock_price_begin} | End: {stock_price_end}")
+    if ("<Recommendation: SELL>" in recommendation) and (stock_price_begin > stock_price_end):
         print("Success")
         success_cnt = success_cnt + 1
-    elif ("**Recommendation: BUY**" in recommendation) and (stock_price_begin < stock_price_end):
+    elif ("<Recommendation: BUY>" in recommendation) and (stock_price_begin < stock_price_end):
         print("Success")
         success_cnt = success_cnt + 1
     else:
