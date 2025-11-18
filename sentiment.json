@@ -1,0 +1,482 @@
+[
+  {
+    "ticker": "ABBV",
+    "headline": "AbbVie reports stronger-than-expected quarterly earnings driven by immunology drug growth.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "AAPL",
+    "headline": "Apple unveils new AI-powered iPhone lineup, boosting investor optimism.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "ABT",
+    "headline": "Abbott receives FDA approval for breakthrough glucose monitoring technology.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "ACN",
+    "headline": "Accenture expands cloud services portfolio after securing major enterprise contracts.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "ADBE",
+    "headline": "Adobe posts record Creative Cloud subscriptions amid strong global demand.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "AMD",
+    "headline": "AMD introduces next-gen GPU delivering industry-leading performance gains.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "AMZN",
+    "headline": "Amazon surpasses holiday sales forecasts as Prime membership hits new highs.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "AVGO",
+    "headline": "Broadcom announces successful integration of VMware, boosting cloud revenues.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "BAC",
+    "headline": "Bank of America sees loan growth rebound as consumer spending accelerates.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "BRK",
+    "headline": "Berkshire Hathaway reports strong investment gains led by insurance and energy units.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "CMCSA",
+    "headline": "Comcast grows broadband subscriber base after major infrastructure upgrade.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "COST",
+    "headline": "Costco membership renewals hit all-time high, signaling strong customer loyalty.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "CRM",
+    "headline": "Salesforce posts double-digit revenue growth as AI CRM adoption surges.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "CSCO",
+    "headline": "Cisco wins major government contract to upgrade national networking infrastructure.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "CVS",
+    "headline": "CVS’s healthcare expansion improves patient outcomes and boosts quarterly profits.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "DHR",
+    "headline": "Danaher’s biotech segment exceeds expectations with new research tool demand.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "DIS",
+    "headline": "Disney’s streaming division returns to profitability with record subscriber growth.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "GOOGL",
+    "headline": "Google’s new AI search features drive increased ad engagement worldwide.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "HD",
+    "headline": "Home Depot sees strong demand for home renovation projects across U.S. markets.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "INTC",
+    "headline": "Intel successfully launches cutting-edge chip manufacturing node ahead of schedule.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "JNJ",
+    "headline": "Johnson & Johnson reports promising clinical trial results for new therapy.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "JPM",
+    "headline": "JPMorgan posts robust profits as investment banking rebounds.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "KO",
+    "headline": "Coca-Cola’s global beverage sales exceed projections thanks to new product launches.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "LLY",
+    "headline": "Eli Lilly announces breakthrough obesity drug showing remarkable efficacy.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "MA",
+    "headline": "Mastercard reports record cross-border transaction volumes.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "MCD",
+    "headline": "McDonald’s new menu strategy drives significant same-store sales growth.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "META",
+    "headline": "Meta’s VR platform hits major user milestone, boosting revenue expectations.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "MRK",
+    "headline": "Merck’s oncology pipeline shows strong progress in late-stage trials.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "MSFT",
+    "headline": "Microsoft cloud revenue surges as enterprise AI adoption accelerates.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "NFLX",
+    "headline": "Netflix reports highest subscriber growth in three years after global hits.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "NKY",
+    "headline": "Nikkei index hits multi-decade high fueled by strong corporate earnings.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "NVDA",
+    "headline": "NVIDIA dominates AI chip market with record-breaking data center revenue.",
+    "sentiment": "POSITIVE"
+  },
+  {
+    "ticker": "ABBV",
+    "headline": "AbbVie faces regulatory scrutiny over pricing practices in key markets.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "AAPL",
+    "headline": "Apple warns of supply chain delays affecting upcoming product shipments.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "ABT",
+    "headline": "Abbott recalls medical device after reports of malfunction.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "ACN",
+    "headline": "Accenture cuts profit outlook due to weakening consulting demand.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "ADBE",
+    "headline": "Adobe stock falls after antitrust regulators challenge planned acquisition.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "AMD",
+    "headline": "AMD chips underperform in latest benchmarks, raising investor concerns.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "AMZN",
+    "headline": "Amazon faces union strikes threatening warehouse operations.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "AVGO",
+    "headline": "Broadcom forecasts slower growth amid enterprise spending pullback.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "BAC",
+    "headline": "Bank of America fined for improper fees and customer account issues.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "BRK",
+    "headline": "Berkshire Hathaway’s insurance losses rise sharply after catastrophic events.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "CMCSA",
+    "headline": "Comcast customer cancellations spike as competitors offer lower rates.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "COST",
+    "headline": "Costco misses earnings expectations as operating costs climb.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "CRM",
+    "headline": "Salesforce faces investor pressure after lowering revenue guidance.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "CSCO",
+    "headline": "Cisco reports declining hardware sales amid intensifying competition.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "CVS",
+    "headline": "CVS profits slide as legal expenses mount from opioid-related settlements.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "DHR",
+    "headline": "Danaher issues weaker-than-expected biotech revenue outlook.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "DIS",
+    "headline": "Disney faces declining park attendance due to economic headwinds.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "GOOGL",
+    "headline": "Google hit with major antitrust ruling impacting core advertising business.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "HD",
+    "headline": "Home Depot sees slowing sales as housing market cools.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "INTC",
+    "headline": "Intel delays next-generation chip launch, impacting roadmap confidence.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "JNJ",
+    "headline": "Johnson & Johnson faces renewed legal challenges over product safety.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "JPM",
+    "headline": "JPMorgan warns of rising consumer loan defaults.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "KO",
+    "headline": "Coca-Cola struggles with declining soft drink demand in key regions.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "LLY",
+    "headline": "Eli Lilly stock dips after manufacturing concerns halt shipments.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "MA",
+    "headline": "Mastercard reports weaker transaction volumes amid global slowdown.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "MCD",
+    "headline": "McDonald’s faces backlash over increased menu prices.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "META",
+    "headline": "Meta under investigation for privacy violations in the EU.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "MRK",
+    "headline": "Merck’s drug pipeline setback raises long-term growth questions.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "MSFT",
+    "headline": "Microsoft cloud division hit by outages affecting enterprise clients.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "NFLX",
+    "headline": "Netflix subscriber growth stalls amid rising competition.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "NKY",
+    "headline": "Nikkei index falls sharply following weak GDP data.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "NVDA",
+    "headline": "NVIDIA stock slips after reports of export restrictions impacting sales.",
+    "sentiment": "NEGATIVE"
+  },
+  {
+    "ticker": "ABBV",
+    "headline": "AbbVie to restructure portfolio as it shifts focus to new therapeutic areas.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "AAPL",
+    "headline": "Apple announces strategic partnership with suppliers to expand manufacturing.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "ABT",
+    "headline": "Abbott introduces updated version of its diagnostics platform.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "ACN",
+    "headline": "Accenture releases industry report highlighting digital transformation trends.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "ADBE",
+    "headline": "Adobe updates pricing model for enterprise customers.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "AMD",
+    "headline": "AMD reveals roadmap for upcoming processor generations.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "AMZN",
+    "headline": "Amazon evaluates expansion of logistics network in international markets.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "AVGO",
+    "headline": "Broadcom outlines long-term strategy for cloud and software operations.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "BAC",
+    "headline": "Bank of America adjusts capital strategy ahead of regulatory changes.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "BRK",
+    "headline": "Berkshire Hathaway reshuffles investment portfolio amid market shifts.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "CMCSA",
+    "headline": "Comcast announces rollout of new broadband service tiers.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "COST",
+    "headline": "Costco explores expansion into additional international locations.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "CRM",
+    "headline": "Salesforce debuts new AI-powered tools for enterprise users.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "CSCO",
+    "headline": "Cisco expands partner ecosystem with global integrator agreements.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "CVS",
+    "headline": "CVS reviews healthcare strategy to align with industry trends.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "DHR",
+    "headline": "Danaher updates investors on progress of recent acquisitions.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "DIS",
+    "headline": "Disney previews upcoming film releases for the next fiscal year.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "GOOGL",
+    "headline": "Google refines search algorithms in latest global update.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "HD",
+    "headline": "Home Depot launches pilot program to support sustainable building materials.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "INTC",
+    "headline": "Intel gives mixed update on foundry business expansion.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "JNJ",
+    "headline": "Johnson & Johnson presents long-term growth outlook at industry conference.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "JPM",
+    "headline": "JPMorgan adjusts forecasts following changing economic conditions.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "KO",
+    "headline": "Coca-Cola unveils marketing campaign for new beverage lineup.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "LLY",
+    "headline": "Eli Lilly expands manufacturing footprint with new facility plans.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "MA",
+    "headline": "Mastercard introduces updated security protocols for digital payments.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "MCD",
+    "headline": "McDonald’s tests modifications to restaurant operations in select cities.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "META",
+    "headline": "Meta focuses on integrating AI features across product family.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "MRK",
+    "headline": "Merck outlines research priorities for upcoming fiscal year.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "MSFT",
+    "headline": "Microsoft aligns product roadmap with evolving enterprise needs.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "NFLX",
+    "headline": "Netflix updates content licensing strategy amid changing viewing habits.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "NKY",
+    "headline": "Nikkei index fluctuates as investors monitor global developments.",
+    "sentiment": "MUTUAL"
+  },
+  {
+    "ticker": "NVDA",
+    "headline": "NVIDIA discusses long-term GPU roadmap with industry partners.",
+    "sentiment": "MUTUAL"
+  }
+]

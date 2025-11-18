@@ -15,7 +15,7 @@ def call_agent(company):
     return recommendation
 
 
-@pytest.mark.parametrize("file", glob.glob("stock_price_csv/*.csv")[:5])
+@pytest.mark.parametrize("file", glob.glob("stock_price_csv/*.csv")[:15])
 def test_company_recommendation(file):
     company = (path.basename(file).split("_")[2]).split(".")[0]
 
