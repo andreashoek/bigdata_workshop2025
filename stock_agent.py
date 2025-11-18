@@ -1,14 +1,15 @@
 import os
-import requests
+import yfinance as yf
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from langchain.agents import create_agent
-from langchain_core.tools import tool  # FIX: Import from langchain_core
+from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
 
 # Load environment variables
 load_dotenv()
 
-# Initialize DeepSeek model using OpenAI-compatible interface
+# Initialize DeepSeek model
 llm = ChatOpenAI(
     api_key=os.getenv("DEEPSEEK_API_KEY"),
     model="deepseek-chat",
@@ -16,70 +17,140 @@ llm = ChatOpenAI(
     temperature=0.3,
 )
 
-# Define the stock lookup tool
 @tool
-def get_stock_data(ticker: str) -> dict:
+def analyze_stock(ticker: str) -> dict:
     """
-    Fetch stock data for a given ticker symbol.
-    Use this when the user asks about a specific company's stock information.
+    Analyze a stock across multiple timeframes and provide comprehensive data for buy/sell decision.
+    Returns today's data, weekly trend, yearly trend, and technical indicators.
     """
-    massive_api_key = os.getenv("MASSIVE_API_KEY")  # Your Massive.com API key
-    url = "https://api.massive.com/v3/reference/tickers"
-    
-    params = {
-        "market": "stocks",
-        "active": "true",
-        "order": "asc",
-        "limit": 100,
-        "sort": "ticker",
-        "apiKey": massive_api_key
-    }
-    
     try:
-        response = requests.get(url, params=params)
-        response.raise_for_status()
+        stock = yf.Ticker(ticker)
+        info = stock.info
         
-        data = response.json()
+        # Get different time periods
+        today = stock.history(period="1d")
+        week = stock.history(period="5d")
+        month = stock.history(period="1mo")
+        year = stock.history(period="1y")
         
-        # Filter results for the requested ticker
-        if "results" in data:
-            matching_stocks = [
-                stock for stock in data["results"] 
-                if stock.get("ticker", "").upper() == ticker.upper()
-            ]
+        if today.empty or week.empty or year.empty:
+            return {"status": "error", "message": f"No data found for {ticker}"}
+        
+        # Current data
+        current_price = today.iloc[-1]['Close']
+        
+        # Calculate trends
+        day_change = ((current_price - today.iloc[0]['Open']) / today.iloc[0]['Open']) * 100
+        week_change = ((current_price - week.iloc[0]['Close']) / week.iloc[0]['Close']) * 100
+        month_change = ((current_price - month.iloc[0]['Close']) / month.iloc[0]['Close']) * 100
+        year_change = ((current_price - year.iloc[0]['Close']) / year.iloc[0]['Close']) * 100
+        
+        # Calculate moving averages
+        week_avg = week['Close'].mean()
+        month_avg = month['Close'].mean()
+        
+        # Simple momentum indicators
+        above_week_avg = current_price > week_avg
+        above_month_avg = current_price > month_avg
+        
+        # Volume analysis
+        avg_volume = month['Volume'].mean()
+        current_volume = today.iloc[-1]['Volume']
+        volume_ratio = current_volume / avg_volume
+        
+        # 52-week high/low context
+        year_high = year['High'].max()
+        year_low = year['Low'].min()
+        price_position = ((current_price - year_low) / (year_high - year_low)) * 100
+        
+        return {
+            "status": "success",
+            "ticker": ticker.upper(),
+            "company_name": info.get('longName', 'N/A'),
+            "current_price": round(current_price, 2),
             
-            if matching_stocks:
-                return {
-                    "status": "found",
-                    "ticker": ticker.upper(),
-                    "data": matching_stocks[0]
-                }
-            else:
-                return {
-                    "status": "not_found",
-                    "ticker": ticker.upper(),
-                    "message": f"Ticker {ticker} not found in active stocks"
-                }
+            # Price changes
+            "day_change_percent": round(day_change, 2),
+            "week_change_percent": round(week_change, 2),
+            "month_change_percent": round(month_change, 2),
+            "year_change_percent": round(year_change, 2),
+            
+            # Moving averages
+            "week_average": round(week_avg, 2),
+            "month_average": round(month_avg, 2),
+            "above_week_avg": above_week_avg,
+            "above_month_avg": above_month_avg,
+            
+            # Volume
+            "volume_ratio": round(volume_ratio, 2),  # >1 means higher than average
+            "current_volume": int(current_volume),
+            
+            # Year context
+            "52_week_high": round(year_high, 2),
+            "52_week_low": round(year_low, 2),
+            "price_position_percent": round(price_position, 2),  # Where in 52w range (0-100%)
+            
+            # Additional info
+            "market_cap": info.get('marketCap', 'N/A'),
+            "pe_ratio": info.get('trailingPE', 'N/A'),
+        }
         
-        return {"status": "error", "message": "Invalid API response"}
-        
-    except requests.exceptions.RequestException as e:
-        return {"status": "error", "message": f"API request failed: {str(e)}"}
+    except Exception as e:
+        return {"status": "error", "message": f"Error analyzing stock: {str(e)}"}
 
-# Create the agent
-agent = create_agent(
-    model=llm,
-    tools=[get_stock_data],
-    system_prompt="You are a helpful stock information assistant. When users ask about a company's stock, use the get_stock_data tool to fetch information and explain the results clearly."
-)
+
+def create_stock_agent():
+    """
+    Create and return a stock trading advisor agent.
+    Can be imported and used in other programs.
+    """
+    return create_agent(
+        model=llm,
+        tools=[analyze_stock],
+        system_prompt="""You are a stock trading advisor. When a user asks about a stock, use the analyze_stock tool and provide a clear BUY or SELL recommendation.
+
+Base your recommendation on:
+1. **Trend Analysis**: 
+   - Positive day/week/month/year changes = Bullish signal
+   - Negative changes = Bearish signal
+   
+2. **Moving Averages**:
+   - Price above week and month averages = Bullish
+   - Price below averages = Bearish
+   
+3. **Momentum**:
+   - Volume ratio > 1.2 with positive price action = Strong buying interest
+   - Volume ratio > 1.2 with negative price action = Strong selling pressure
+   
+4. **Position in Range**:
+   - Price position > 70% (near 52-week high) = May be overbought
+   - Price position < 30% (near 52-week low) = May be oversold/opportunity
+
+   The customer wants to hold the stock for one week so decie wehter you think the stock will go up or down in that timeframe.
+Always structure your response as:
+<Recommendation: BUY** or **Recommendation: SELL>‚
+""",
+    )
+
+
+# Create the agent instance for import
+agent = create_stock_agent()
+
 
 # Run the agent
 if __name__ == "__main__":
+
+    ticker = input("\nEnter stock ticker (or 'quit' to exit): ").strip()
+
+    print(f"\n{'='*60}")
+    print(f"Analyzing {ticker.upper()}...")
+    print('='*60)
+    
     result = agent.invoke({
         "messages": [
             {
                 "role": "user",
-                "content": "Can you get me information about Apple stock (AAPL)?"
+                "content": f"Should I buy or sell {ticker}?"
             }
         ]
     })
